@@ -495,7 +495,7 @@
     const loadingContent = document.getElementById('loading-content');
     const introStartBtn = document.getElementById('intro-start-btn');
 
-    // 通用播放函式
+    // 通用播放函式 (★★★ 修改處：使用 cloneNode 避免音效互相衝突 ★★★)
     function playSound(type) {
         let audioId = '';
         let volume = 1.0; 
@@ -505,9 +505,15 @@
 
         const audio = document.getElementById(audioId);
         if (audio) {
-            if (type !== 'bgm') audio.currentTime = 0; 
-            audio.volume = volume;
-            audio.play().catch(e => {}); 
+            if (type !== 'bgm') {
+                // 短音效使用 cloneNode，確保連續觸發時每次都能獨立播好播滿
+                const clone = audio.cloneNode();
+                clone.volume = volume;
+                clone.play().catch(e => {}); 
+            } else {
+                audio.volume = volume;
+                audio.play().catch(e => {}); 
+            }
         }
     }
 
