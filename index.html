@@ -556,12 +556,13 @@
             currentScale = 1.6; 
             isMobile = false;
         } else {
-            // 手機版：放大鏡縮放 0.85，物件視覺尺寸縮小到 42px
-            if (width < height) {
+            // 手機版：
+            if (width < height) { // 直式
                 currentScale = 1.0; 
                 symbolVisualPx = 42; 
-            } else {
-                currentScale = 1.0; 
+            } else { // 橫式 ★★★ 縮小物件視覺大小避免擁擠
+                currentScale = 0.9; 
+                symbolVisualPx = 36; 
             }
             isMobile = true;
         }
@@ -621,6 +622,7 @@
         const camWidth = (window.innerWidth <= 768) ? 120 : 160;
         const camHeight = (window.innerWidth <= 768) ? 90 : 120;
         const camMargin = 10;
+        const safePad = 40; // ★ 加大相機周圍的安全邊距，防止物件邊緣被遮擋
         
         // 判斷目前視窗是否為直式 (Portrait)
         const isPortrait = window.innerHeight > window.innerWidth;
@@ -629,18 +631,18 @@
             // 直式：相機在右下角
             const camBottom = 80; // 配合 CSS 的 bottom: 80px
             rects.push({
-                left: window.innerWidth - camWidth - camMargin - 10, 
-                top: window.innerHeight - camHeight - camBottom - 10,
+                left: window.innerWidth - camWidth - camMargin - safePad, 
+                top: window.innerHeight - camHeight - camBottom - safePad,
                 right: window.innerWidth,
                 bottom: window.innerHeight
             });
         } else {
             // 橫式 (或電腦)：相機在右上角
             rects.push({
-                left: window.innerWidth - camWidth - camMargin - 10,
+                left: window.innerWidth - camWidth - camMargin - safePad,
                 top: 0,
                 right: window.innerWidth,
-                bottom: camHeight + camMargin + 10
+                bottom: camHeight + camMargin + safePad
             });
         }
 
@@ -689,9 +691,9 @@
         const forbiddenRects = getForbiddenRects();
         let usedPositions = [];
         
-        // 間距設定
-        let idealSeparation = isMobile ? 50 : (160 * currentScale); 
-        let minSeparation = isMobile ? 30 : (70 * currentScale);
+        // ★★★ 間距設定：加大手機版的物件距離 ★★★
+        let idealSeparation = isMobile ? 75 : (160 * currentScale); 
+        let minSeparation = isMobile ? 45 : (70 * currentScale);
 
         for (let i = 0; i < TOTAL_SYMBOLS; i++) {
             const el = document.createElement('div');
@@ -1107,12 +1109,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
