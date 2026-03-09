@@ -663,7 +663,7 @@
         
         // 重置狀態
         foundCount = 0;
-        document.getElementById('status').textContent = `Clues Found: 0 / ${TARGET_SYMBOLS_COUNT}`;
+        document.getElementById('status').textContent = `線索: 0 / ${TARGET_SYMBOLS_COUNT}`;
         const oldSymbols = document.querySelectorAll('.symbol');
         oldSymbols.forEach(el => el.remove());
         symbolsData = [];
@@ -983,7 +983,7 @@
         setTimeout(() => flash.remove(), 500);
 
         foundCount++;
-        document.getElementById('status').textContent = `Clues Found: ${foundCount} / ${TARGET_SYMBOLS_COUNT}`;
+        document.getElementById('status').textContent = `線索: ${foundCount} / ${TARGET_SYMBOLS_COUNT}`;
 
         if (foundCount === TARGET_SYMBOLS_COUNT) {
             isGameActive = false;
@@ -1106,6 +1106,7 @@
 </body>
 
 </html>
+
 
 
 
