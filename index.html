@@ -495,7 +495,7 @@
     const loadingContent = document.getElementById('loading-content');
     const introStartBtn = document.getElementById('intro-start-btn');
 
-    // 通用播放函式 (★★★ 修改處：使用 cloneNode 避免音效互相衝突 ★★★)
+    // 通用播放函式 (★★★ 修改處：避免手機版被阻擋，不使用 cloneNode ★★★)
     function playSound(type) {
         let audioId = '';
         let volume = 1.0; 
@@ -506,10 +506,11 @@
         const audio = document.getElementById(audioId);
         if (audio) {
             if (type !== 'bgm') {
-                // 短音效使用 cloneNode，確保連續觸發時每次都能獨立播好播滿
-                const clone = audio.cloneNode();
-                clone.volume = volume;
-                clone.play().catch(e => {}); 
+                // 將原本已經由玩家點擊解鎖的音軌暫停，並將時間歸零重播
+                audio.pause();
+                audio.currentTime = 0;
+                audio.volume = volume;
+                audio.play().catch(e => {}); 
             } else {
                 audio.volume = volume;
                 audio.play().catch(e => {}); 
@@ -566,7 +567,7 @@
             if (width < height) { // 直式
                 currentScale = 1.0; 
                 symbolVisualPx = 42; 
-            } else { // 橫式 ★★★ 縮小物件視覺大小避免擁擠
+            } else { // 橫式
                 currentScale = 0.9; 
                 symbolVisualPx = 36; 
             }
@@ -588,7 +589,6 @@
     }
 
     function getRandomPosition() {
-        // ★★★ 修改的地方：將手機版 padding 加大至 60 ★★★
         const padding = isMobile ? 60 : 60 * currentScale; 
         
         return {
@@ -628,7 +628,7 @@
         const camWidth = (window.innerWidth <= 768) ? 120 : 160;
         const camHeight = (window.innerWidth <= 768) ? 90 : 120;
         const camMargin = 10;
-        const safePad = 40; // ★ 加大相機周圍的安全邊距，防止物件邊緣被遮擋
+        const safePad = 40;
         
         // 判斷目前視窗是否為直式 (Portrait)
         const isPortrait = window.innerHeight > window.innerWidth;
