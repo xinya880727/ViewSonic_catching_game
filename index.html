@@ -581,7 +581,8 @@
     }
 
     function getRandomPosition() {
-        const padding = isMobile ? 10 : 60 * currentScale; 
+        // ★★★ 修改的地方：將手機版 padding 加大至 60 ★★★
+        const padding = isMobile ? 60 : 60 * currentScale; 
         
         return {
             x: padding + Math.random() * (window.innerWidth - padding * 2),
@@ -1106,7 +1107,3 @@
 </body>
 
 </html>
-
-
-
-
